@@ -2,9 +2,11 @@ import React, { useCallback, useState } from "react";
 import * as Styled from "./Users.styled";
 import { useDispatch } from "react-redux";
 import { removeUserAC } from "../../store/users-reducer";
-import { Modal } from "../modal/Modal";
+import { InfoModal } from "../infoModal/InfoModal";
 import { usersType } from "../../api";
 import { LightText } from "../lightText/LightText";
+import { Button } from "../common/button/Button";
+import { useModal } from "../../utils/useModal";
 
 type UsersPropsType = {
   users: usersType[];
@@ -13,15 +15,14 @@ type UsersPropsType = {
 
 export const Users = ({ users, filterValue }: UsersPropsType) => {
   const dispatch = useDispatch();
-  const [modal, setModal] = useState<boolean>(false);
-  const [modalData, setModalData] = useState<any>();
+  const { isModalOpen, toggleModal } = useModal();
+  const [modalData, setModalData] = useState<usersType | null>(null);
 
   const removeUser = (id: number) => dispatch(removeUserAC(id));
 
-  const closeModal = () => setModal(false);
   const openModal = (data: usersType) => {
     setModalData(data);
-    setModal(true);
+    toggleModal();
   };
   const text = useCallback(
     (string: string) => {
@@ -32,22 +33,23 @@ export const Users = ({ users, filterValue }: UsersPropsType) => {
 
   return (
     <>
-      {users.map((u) => (
-        <Styled.UsersWrapper key={u.id} onClick={() => openModal(u)}>
-          <Styled.UserItem>{text(u.name)}</Styled.UserItem>
-          <Styled.UserItem>{text(u.username)}</Styled.UserItem>
-          <Styled.UserItem>{text(u.email)}</Styled.UserItem>
-          <Styled.DeleteButton
-            onClick={(e) => {
-              e.stopPropagation();
-              removeUser(u.id);
-            }}
-          >
-            X
-          </Styled.DeleteButton>
-        </Styled.UsersWrapper>
-      ))}
-      {modal && <Modal data={modalData} closeModal={closeModal} />}
+      {users.length ? (
+        users.map((u) => (
+          <Styled.UsersWrapper key={u.id} onClick={() => openModal(u)}>
+            <Styled.ItemsWrapper>
+              <Styled.UserItem>{text(u.name)}</Styled.UserItem>
+              <Styled.UserItem>{text(u.username)}</Styled.UserItem>
+            </Styled.ItemsWrapper>
+            <Styled.ItemsWrapper>
+              <Styled.UserItem>{text(u.email)}</Styled.UserItem>
+              <Button buttonText="Remove" onClickHandler={() => removeUser(u.id)} />
+            </Styled.ItemsWrapper>
+          </Styled.UsersWrapper>
+        ))
+      ) : (
+        <Styled.Hint>Press Reset to display the list of users</Styled.Hint>
+      )}
+      {isModalOpen && <InfoModal data={modalData} closeModal={toggleModal} />}
     </>
   );
 };

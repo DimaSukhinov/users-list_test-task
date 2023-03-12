@@ -21,19 +21,8 @@ export const ModalContent = styled.div`
 
 export const CloseButton = styled.div`
   position: absolute;
-  top: 0;
-  right: 0;
-  padding: 5px;
+  top: 5px;
+  right: 9px;
   font-weight: 500;
   cursor: pointer;
-`;
-
-export const InfoBlockWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-`;
-
-export const InfoBlock = styled.div`
-  display: flex;
 `;

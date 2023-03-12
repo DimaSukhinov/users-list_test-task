@@ -1,5 +1,6 @@
 import React, { ChangeEvent } from "react";
 import * as Styled from "./Header.styled";
+import { Button } from "../common/button/Button";
 
 type HeaderPropsType = {
   filterValue: string;
@@ -17,8 +18,8 @@ export const Header = ({ filterValue, setFilterValue, getAllUsers }: HeaderProps
   return (
     <Styled.HeaderWrapper>
       <Styled.Container>
-        <input value={filterValue} onChange={onValueChangeHandler} type="text" />
-        <Styled.ResetButton onClick={removeAll}>Reset</Styled.ResetButton>
+        <input value={filterValue} onChange={onValueChangeHandler} type="text" placeholder="search..." />
+        <Button buttonText="Reset" onClickHandler={removeAll} />
       </Styled.Container>
     </Styled.HeaderWrapper>
   );

@@ -10,5 +10,4 @@ export const store = createStore(rootReducer);
 
 export type AppRootStateType = ReturnType<typeof rootReducer>;
 
-export const useAppSelector: TypedUseSelectorHook<AppRootStateType> =
-  useSelector;
+export const useAppSelector: TypedUseSelectorHook<AppRootStateType> = useSelector;
